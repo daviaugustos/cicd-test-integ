@@ -54,8 +54,8 @@ app.post("/post-build", async (req, res) => {
   }
 });
 
-app.post("/", async (req, res) => {
-  res.send("err");
+app.get("/", async (req, res) => {
+  res.send("ok");
 });
 
 app.listen(port, () => {
