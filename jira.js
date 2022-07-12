@@ -7,7 +7,7 @@ const BASE_URL = `https://daviaugustos.atlassian.net`;
 const baseHeaders = {
   accept: "application/json",
   Authorization: `Basic ${Buffer.from(
-    "davi.auguusto@gmail.com:Mx3DlgS8kJGCHiS4whQ487F5"
+    "davi.auguusto@gmail.com:g8p9eNbmquLmssYTWX8m7585"
   ).toString("base64")}`,
 };
 
