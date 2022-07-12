@@ -2,7 +2,7 @@ import express from "express";
 import { getBranches, createBuild } from "./appcenter.js";
 import { postChangeStatus, postAddComment } from "./jira.js";
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
