@@ -17,7 +17,7 @@ app.post("/build", async (req, res) => {
     );
 
     if (!respectiveBranch.length) {
-      throw { message: "Branch not found" };
+      throw { message: "Branch not found." };
     }
     const fullBranchName = respectiveBranch[0].branch.name;
 
