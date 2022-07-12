@@ -140,7 +140,7 @@ const baseHeaders = {
 
 export const getIssue = async (issueKey) => {
   const req = await fetch(
-    `${process.env.BASE_URL}/rest/api/3/issue/${issueKey}`,
+    `${process.env.JIRA_BASE_URL}/rest/api/3/issue/${issueKey}`,
     {
       method: "GET",
       headers: baseHeaders,
@@ -152,7 +152,7 @@ export const getIssue = async (issueKey) => {
 
 export const getTransitions = async (issueKey) => {
   const req = await fetch(
-    `${process.env.BASE_URL}/rest/api/3/issue/${issueKey}/transitions`,
+    `${process.env.JIRA_BASE_URL}/rest/api/3/issue/${issueKey}/transitions`,
     {
       method: "GET",
       headers: baseHeaders,
@@ -164,7 +164,7 @@ export const getTransitions = async (issueKey) => {
 
 export const postChangeStatus = async (issueKey, transitionID) => {
   const req = await fetch(
-    `${process.env.BASE_URL}/rest/api/3/issue/${issueKey}/transitions`,
+    `${process.env.JIRA_BASE_URL}/rest/api/3/issue/${issueKey}/transitions`,
     {
       method: "POST",
       headers: { ...baseHeaders, "Content-Type": "application/json" },
@@ -190,7 +190,7 @@ export const postAddComment = async (issueKey, buildData) => {
   );
 
   const req = await fetch(
-    `${process.env.BASE_URL}/rest/api/3/issue/${issueKey}/comment`,
+    `${process.env.JIRA_BASE_URL}/rest/api/3/issue/${issueKey}/comment`,
     {
       method: "POST",
       headers: { ...baseHeaders, "Content-Type": "application/json" },
