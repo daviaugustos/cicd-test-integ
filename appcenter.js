@@ -2,9 +2,9 @@ import fetch from "node-fetch";
 import { getCommitSha } from "./git.js";
 
 export const customAppcenterSettings = {
-  token: "bc992afa40b9b7b879fc0eb11359763c35c637dd",
-  projectName: "HomeFinder-App",
-  ownerName: "davi.auguusto-gmail.com",
+  token: process.env.APPCENTER_API_TOKEN,
+  projectName: process.env.APPCENTER_PROJECT_NAME,
+  ownerName: process.env.APPCENTER_OWNER_NAME,
 };
 
 const BASE_URL = `https://api.appcenter.ms/v0.1/apps/${customAppcenterSettings.ownerName}/${customAppcenterSettings.projectName}`;

@@ -2,12 +2,10 @@ import fetch from "node-fetch";
 import intervalToDuration from "date-fns/intervalToDuration/index.js";
 import formatDuration from "date-fns/formatDuration/index.js";
 
-const BASE_URL = `https://daviaugustos.atlassian.net`;
-
 const baseHeaders = {
   accept: "application/json",
   Authorization: `Basic ${Buffer.from(
-    "davi.auguusto@gmail.com:g8p9eNbmquLmssYTWX8m7585"
+    `${process.env.JIRA_USER}:${process.env.JIRA_API_TOKEN}`
   ).toString("base64")}`,
 };
 
@@ -141,17 +139,20 @@ const baseHeaders = {
 // };
 
 export const getIssue = async (issueKey) => {
-  const req = await fetch(`${BASE_URL}/rest/api/3/issue/${issueKey}`, {
-    method: "GET",
-    headers: baseHeaders,
-  });
+  const req = await fetch(
+    `${process.env.BASE_URL}/rest/api/3/issue/${issueKey}`,
+    {
+      method: "GET",
+      headers: baseHeaders,
+    }
+  );
 
   return req.json();
 };
 
 export const getTransitions = async (issueKey) => {
   const req = await fetch(
-    `${BASE_URL}/rest/api/3/issue/${issueKey}/transitions`,
+    `${process.env.BASE_URL}/rest/api/3/issue/${issueKey}/transitions`,
     {
       method: "GET",
       headers: baseHeaders,
@@ -163,7 +164,7 @@ export const getTransitions = async (issueKey) => {
 
 export const postChangeStatus = async (issueKey, transitionID) => {
   const req = await fetch(
-    `${BASE_URL}/rest/api/3/issue/${issueKey}/transitions`,
+    `${process.env.BASE_URL}/rest/api/3/issue/${issueKey}/transitions`,
     {
       method: "POST",
       headers: { ...baseHeaders, "Content-Type": "application/json" },
@@ -188,118 +189,122 @@ export const postAddComment = async (issueKey, buildData) => {
     })
   );
 
-  const req = await fetch(`${BASE_URL}/rest/api/3/issue/${issueKey}/comment`, {
-    method: "POST",
-    headers: { ...baseHeaders, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      body: {
-        version: 1,
-        type: "doc",
-        content: [
-          {
-            type: "paragraph",
-            content: [
-              {
-                type: "text",
-                text: `${app_name} (${os})`,
-                marks: [
-                  {
-                    type: "strong",
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            type: "paragraph",
-            content: [
-              {
-                type: "text",
-                text: "Build ",
-              },
-              {
-                type: "text",
-                text: `#${build_id} `,
-                marks: [
-                  {
-                    type: "strong",
-                  },
-                ],
-              },
-              {
-                type: "text",
-                text: `${build_status}. `,
-              },
-              {
-                type: "emoji",
-                attrs: {
-                  shortName: build_status === "Succeeded" ? ":rocket:" : ":x:",
-                  id: build_status === "Succeeded" ? "1f680" : "274c",
-                  text: build_status === "Succeeded" ? "🚀" : "❌",
-                },
-              },
-              {
-                type: "text",
-                text: " ",
-              },
-            ],
-          },
-          {
-            type: "paragraph",
-            content: [
-              {
-                type: "text",
-                text: "Duration",
-                marks: [
-                  {
-                    type: "strong",
-                  },
-                ],
-              },
-              {
-                type: "text",
-                text: `: ${duration}`,
-              },
-            ],
-          },
-          {
-            type: "paragraph",
-            content: [
-              {
-                type: "text",
-                text: build_status === "Succeeded" ? "Version download" : " ",
-                marks: [
-                  {
-                    type: "strong",
-                  },
-                ],
-              },
-              {
-                type: "text",
-                text: build_status === "Succeeded" ? ": " : " ",
-              },
-              {
-                type: "text",
-                text: build_status === "Succeeded" ? branch : " ",
-                marks: [
-                  {
-                    type: "link",
-                    attrs: {
-                      href: build_link,
+  const req = await fetch(
+    `${process.env.BASE_URL}/rest/api/3/issue/${issueKey}/comment`,
+    {
+      method: "POST",
+      headers: { ...baseHeaders, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        body: {
+          version: 1,
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: `${app_name} (${os})`,
+                  marks: [
+                    {
+                      type: "strong",
                     },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "Build ",
+                },
+                {
+                  type: "text",
+                  text: `#${build_id} `,
+                  marks: [
+                    {
+                      type: "strong",
+                    },
+                  ],
+                },
+                {
+                  type: "text",
+                  text: `${build_status}. `,
+                },
+                {
+                  type: "emoji",
+                  attrs: {
+                    shortName:
+                      build_status === "Succeeded" ? ":rocket:" : ":x:",
+                    id: build_status === "Succeeded" ? "1f680" : "274c",
+                    text: build_status === "Succeeded" ? "🚀" : "❌",
                   },
-                ],
-              },
-            ],
-          },
-          {
-            type: "paragraph",
-            content: [],
-          },
-        ],
-      },
-    }),
-  });
+                },
+                {
+                  type: "text",
+                  text: " ",
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "Duration",
+                  marks: [
+                    {
+                      type: "strong",
+                    },
+                  ],
+                },
+                {
+                  type: "text",
+                  text: `: ${duration}`,
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: build_status === "Succeeded" ? "Version download" : " ",
+                  marks: [
+                    {
+                      type: "strong",
+                    },
+                  ],
+                },
+                {
+                  type: "text",
+                  text: build_status === "Succeeded" ? ": " : " ",
+                },
+                {
+                  type: "text",
+                  text: build_status === "Succeeded" ? branch : " ",
+                  marks: [
+                    {
+                      type: "link",
+                      attrs: {
+                        href: build_link,
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: "paragraph",
+              content: [],
+            },
+          ],
+        },
+      }),
+    }
+  );
 
   return req;
 };
